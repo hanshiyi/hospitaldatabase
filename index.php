@@ -1,9 +1,9 @@
 <?php 
   session_start();
-  if(isset($_SESSION["email"])){
-    $email = $_SESSION["email"];
-    $identity = $_SESSION["identity"];
-    echo "<script>var islogin=true;var jstext='$identit';</script>";  
+  if(isset($_COOKIE["email"])){
+    $email = $_COOKIE["email"];
+    $identity = $_COOKIE["identity"];
+    echo "<script>var islogin=true;var jstext='$identity';</script>";  
   }
   else
   {
@@ -15,33 +15,37 @@
 <script >
 $(document).ready(function(){ 
         if(islogin){
-        if($identity=="Doctor"){
-          var msg1 = "<li><a href='#'>New Treatment</a></li>";
-          var msg2 = "<li><a href='#'>Treatment Record</a></li>";
+          $("#button-container").append("<button type=\"button\" class=\"btn btn-success\" onclick=\"LogOut();\" style=\"float:right;  margin-right:50px;\">LogOut</button>")
+        if(jstext=="Doctor"){
+          var msg1 = "<li><a href='newTreatment.php'>New Treatment</a></li>";////////////////////////
+          var msg2 = "<li><a href='treatmentRecord.php'>Treatment Record</a></li>";
           $("#navbarul").append(msg1);
           $("#navbarul").append(msg2);
-        }else if($identity=="Patient"){
-          var msg1 = "<li><a href='#'>Treatment Record</a></li>";
-          var msg2 = "<li><a href='#'>Payment Record</a></li>";
-          var msg3 = "<li><a href='#'>Doctor Informations</a></li>";
+        }else if(jstext=="Patient"){
+          var msg1 = "<li><a href='treatmentRecord.php'>Treatment Record</a></li>";
+          var msg2 = "<li><a href='paymentrecord.php'>Payment Record</a></li>"; 
+          var msg3 = "<li><a href='doctorinformation.php'>Doctor Information</a></li>";////////////////////////
           $("#navbarul").append(msg1);
           $("#navbarul").append(msg2);
           $("#navbarul").append(msg3);
-        }else if($identity=="Nurse"){
-          var msg1 = "<li><a href='#'>Treatment Record</a></li>";
-          var msg2 = "<li><a href='#'>Doctor Informations</a></li>";
+        }else if(jstext=="Nurse"){
+          var msg1 = "<li><a href='hospitalizationinformation.php'>Hospitalization Information</a></li>";////////////////////////
+          var msg2 = "<li><a href='doctorinformation.php'>Doctor Information</a></li>";
           $("#navbarul").append(msg1);
           $("#navbarul").append(msg2);
-        }else if($identity=="Finance"){
-          var msg1 = "<li><a href='#'>Treatment Record</a></li>";
-          var msg2 = "<li><a href='#'>Hospitalization Informations</a></li>";
+        }else if(jstext=="Finance"){
+          var msg1 = "<li><a href='treatmentRecord.php'>Treatment Record</a></li>";
+          var msg2 = "<li><a href='newpayment.php'>New Payment</a></li>";
+          var msg3 = "<li><a href='paymentrecord.php'>Payment Record</a></li>";
           $("#navbarul").append(msg1);
           $("#navbarul").append(msg2);
+          $("#navbarul").append(msg3);
+
         }
         
       }
       else{
-
+          $("#button-container").append("<button type=\"button\" class=\"btn btn-primary\" onclick=\"location.href='signin.php';\" style=\"float:right;  margin-right:50px;\">SignIn</button><button style=\"float:right;  margin-botton:20px; margin-right:20px;\"type=\"button\" class=\"btn btn-danger\" onclick=\"location.href='signup.php'\" right=\"0\">SignUp</button>")
       }
     });
 
@@ -75,7 +79,7 @@ $(document).ready(function(){
 ================================================== -->
   <body>
     <div class="navbar-wrapper">
-      <div class="container">
+      <div class="container" id = "button-container">
 
         <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
           <div class="container">
@@ -96,14 +100,7 @@ $(document).ready(function(){
             
           </div>
         </nav>
-        <button type="button" class="btn btn-primary" onclick="location.href='signin.html';" 
-        style="float:right;  margin-right:50px;">
-          SignIn
-        </button>
-        <button style="float:right;  margin-botton:20px; margin-right:20px;"
-        type="button" class="btn btn-danger" onclick="location.href='signup.html'" right="0">
-          SignUp
-        </button>
+      
       </div>
         
     </div>
@@ -120,7 +117,7 @@ $(document).ready(function(){
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item active">
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+          <img src="images/img/doctor-with-boy-child.jpg" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Patient Care</h1>
@@ -129,7 +126,7 @@ $(document).ready(function(){
           </div>
         </div>
         <div class="item">
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAGZmZgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
+          <img src="images/img/doctor-counsels-woman-and-man.jpg" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Doctor assistance.</h1>
@@ -138,12 +135,11 @@ $(document).ready(function(){
           </div>
         </div>
         <div class="item">
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAFVVVQAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+          <img src="images/img/medical-doctor-salary.jpg" alt="Third slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Employee convenience.</h1>
               <p>Our dababase will help employee get access to the their own work. </p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
             </div>
           </div>
         </div>
@@ -168,25 +164,38 @@ $(document).ready(function(){
       <!-- Three columns of text below the carousel -->
       <div class="row">
         <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+          <img class="img-circle" src="images/img/doctor-patient.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>R.J.Roberts</h2>
+          <p>This database system has narrowed the distance between me and the patient, and with the help of the "One-Click Query" function, I can make a more accurate diagnosis.</p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Heading</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+          <img class="img-circle" src="images/img/235086-14091ZHQ229.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Dale Smith</h2>
+          <p>Since the hospital applyed this technology, I have never worried about if I forget to bring my medical records with me, and doctors' information is all posted on the Internet.</p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <img class="img-circle" src="images/img/2.jpg" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Jeremy Lin</h2>
+          <p>The database system boosted my productivity and increased my contact with staff in other departments, resulting in a significantly lower probability of erroneous billing.</p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
 
+<script type="text/javascript">
+function delCookie($name){    
+            var myDate=new Date();    
+            myDate.setTime(-1000);//设置时间    
+            document.cookie=$name+"=''; expires="+myDate.toGMTString();                
+      }     
+  function LogOut()
+  {
+      delCookie("email");
+      delCookie("identity");
+       window.location.href="index.php";
+  }
+</script>
 
 
       <hr class="featurette-divider">

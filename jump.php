@@ -31,17 +31,27 @@ if($identity == "Patient"){
 	$result = mysql_query("SELECT * FROM doctor");
 	while($row = mysql_fetch_array($result))
 	{
-		if($row['employee_account'] == $email && $row['employee_password']==$password)
+		if($row['doctor_account'] == $email && $row['doctor_password']==$password)
 		{
 			$flag = true;
 			break;
 		}
 	}
-}else{
-	$result = mysql_query("SELECT * FROM employee");
+}else if($identity == "Nurse"){
+	$result = mysql_query("SELECT * FROM nurse");
 	while($row = mysql_fetch_array($result))
 	{
-		if($row['employee_account'] == $email && $row['employee_password']==$password)
+		if($row['nurse_account'] == $email && $row['nurse_password']==$password)
+		{
+			$flag = true;
+			break;
+		}
+	}
+}else if($identity == "Finance"){
+	$result = mysql_query("SELECT * FROM finance");
+	while($row = mysql_fetch_array($result))
+	{
+		if($row['finance_account'] == $email && $row['finance_password']==$password)
 		{
 			$flag = true;
 			break;
@@ -57,6 +67,11 @@ if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$email)) {
 }
 if ($flag)
 {
+	
+setcookie("email", $email, time()+3600);
+setcookie("password", $password, time()+3600);
+setcookie("identity", $identity, time()+3600);
+
 
 $_SESSION["email"] = $email;
 $_SESSION["password"] = $password;
@@ -65,7 +80,9 @@ $_SESSION["identity"] = $identity;
 }
 else
 {
-	header("Location: signin.html");
+
+$_SESSION["logfailure"] = true;
+	header("Location: signin.php");
 }
 ?>
 
